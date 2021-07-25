@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bark-detector
+  labels:
+    app: bark-detector
+    app.kubernetes.io/instance: bark-detector
+    app.kubernetes.io/name: bark-detector
+    project: barkend
+  namespace: barkend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: bark-detector
+      app.kubernetes.io/name: bark-detector
+  template:
+    metadata:
+      labels:
+        app: bark-detector
+        app.kubernetes.io/instance: bark-detector
+        app.kubernetes.io/name: bark-detector
+        project: barkend
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/Madrid
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+          value: 192.168.1.12:9094
+        - name: S3_ENDPOINT
+          value: https://192.168.1.14:443
+        - name: S3_USER
+          value: admin
+        - name: S3_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: s3.password
+              name: bark-detector-secret
+        - name: SELDON_ENDPOINT
+          value: http://ml-serving:9000
+        - name: LOGGING_CONFIG
+          value: /opt/app/config/logback-spring.xml
+        image: barkend/bark-detector:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /actuator/health/liveness
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: bark-detector
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /actuator/health/readiness
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 240m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 250Mi
+        volumeMounts:
+        - mountPath: /opt/app/config
+          name: application-config
+          readOnly: true
+      securityContext: {}
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: bark-detector-config
+        name: application-config
