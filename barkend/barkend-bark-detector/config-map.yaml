@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: alarm-launcher-config
+  name: bark-detector-config
 data:
   logback-spring.xml: |
       <?xml version="1.0" encoding="UTF-8"?>
