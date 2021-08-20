@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPattern": "/v1/models/barkend:predict"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "predictions": [
+        {
+          "air_conditioner": "0.00007508506678",
+          "children_playing": "0.0.1509760320186614990234",
+          "dog_bark": "0.83962621688842773437"
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
+

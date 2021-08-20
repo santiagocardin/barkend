@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+
+build:
+  artifacts:
+    - image: barkend/bark-detector
+      context: .
+      jib: {}
+  local: {}
+
+deploy:
+  helm:
+    releases:
+      - name: bark-detector
+        chartPath: charts/bark-detector
+        namespace: barkend
+        skipBuildDependencies: true
+        artifactOverrides:
+          image: barkend/bark-detector
+        setValueTemplates:
+          s3.password: "{{.S3_SECRET}}"

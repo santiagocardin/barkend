@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "EventName": {
+      "type": "string"
+    },
+    "Key": {
+      "type": "string"
+    },
+    "Records": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "eventVersion": {
+              "type": "string"
+            },
+            "eventSource": {
+              "type": "string"
+            },
+            "awsRegion": {
+              "type": "string"
+            },
+            "eventTime": {
+              "type": "string"
+            },
+            "eventName": {
+              "type": "string"
+            },
+            "userIdentity": {
+              "type": "object",
+              "properties": {
+                "principalId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "principalId"
+              ]
+            },
+            "requestParameters": {
+              "type": "object",
+              "properties": {
+                "principalId": {
+                  "type": "string"
+                },
+                "region": {
+                  "type": "string"
+                },
+                "sourceIPAddress": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "principalId",
+                "region",
+                "sourceIPAddress"
+              ]
+            },
+            "responseElements": {
+              "type": "object",
+              "properties": {
+                "content-length": {
+                  "type": "string"
+                },
+                "x-amz-request-id": {
+                  "type": "string"
+                },
+                "x-minio-deployment-id": {
+                  "type": "string"
+                },
+                "x-minio-origin-endpoint": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "content-length",
+                "x-amz-request-id",
+                "x-minio-deployment-id",
+                "x-minio-origin-endpoint"
+              ]
+            },
+            "s3": {
+              "type": "object",
+              "properties": {
+                "s3SchemaVersion": {
+                  "type": "string"
+                },
+                "configurationId": {
+                  "type": "string"
+                },
+                "bucket": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "ownerIdentity": {
+                      "type": "object",
+                      "properties": {
+                        "principalId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "principalId"
+                      ]
+                    },
+                    "arn": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "ownerIdentity",
+                    "arn"
+                  ]
+                },
+                "object": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "integer"
+                    },
+                    "eTag": {
+                      "type": "string"
+                    },
+                    "contentType": {
+                      "type": "string"
+                    },
+                    "userMetadata": {
+                      "type": "object",
+                      "properties": {
+                        "content-type": {
+                          "type": "string"
+                        },
+                        "x-minio-internal-inline-data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content-type",
+                        "x-minio-internal-inline-data"
+                      ]
+                    },
+                    "sequencer": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "size",
+                    "eTag",
+                    "contentType",
+                    "userMetadata",
+                    "sequencer"
+                  ]
+                }
+              },
+              "required": [
+                "s3SchemaVersion",
+                "configurationId",
+                "bucket",
+                "object"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "host": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "string"
+                },
+                "userAgent": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "host",
+                "port",
+                "userAgent"
+              ]
+            }
+          },
+          "required": [
+            "eventVersion",
+            "eventSource",
+            "awsRegion",
+            "eventTime",
+            "eventName",
+            "userIdentity",
+            "requestParameters",
+            "responseElements",
+            "s3",
+            "source"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "EventName",
+    "Key",
+    "Records"
+  ]
+}

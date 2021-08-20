@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image: barkend/bark-detector
+imageConfig:
+  pullPolicy: IfNotPresent
+
+nameOverride: "bark-detector"
+fullnameOverride: "bark-detector"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 250Mi
+
+kafka:
+  servers: 192.168.1.12:9094
+
+s3:
+  endpoint: https://192.168.1.14:443
+  user: admin
+  password:
+
+seldon:
+  endpoint: http://ml-serving:9000

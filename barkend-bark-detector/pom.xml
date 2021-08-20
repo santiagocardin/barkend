@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.barkend</groupId>
+        <artifactId>barkend</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <groupId>com.barkend</groupId>
+    <artifactId>bark-detector</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>bark-detector</name>
+    <description>Barkend :: Bark detector service</description>
+
+    <properties>
+        <aws.java.sdk.s3.version>1.11.163</aws.java.sdk.s3.version>
+        <swagger.version>2.0.26</swagger.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws.java.sdk.s3.version}</version>
+        </dependency>
+
+        <!-- Seldon API dependencies -->
+		<dependency>
+			<groupId>io.swagger.parser.v3</groupId>
+			<artifactId>swagger-parser</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-core</artifactId>
+            <version>8.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <version>11.0</version>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.feign</groupId>
+            <artifactId>feign-jackson</artifactId>
+            <version>8.18.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+                    <targetPackage>com.barkend.detector.types</targetPackage>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/seldon-core-oas3.json</inputSpec>
+                            <generatorName>java</generatorName>
+                            <library>resttemplate</library>
+                            <apiPackage>com.barkend.detector.client.api</apiPackage>
+                            <modelPackage>com.barkend.detector.client.model</modelPackage>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateApiTests>false</generateApiTests>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <delegatePattern>false</delegatePattern>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.1.12:9094
+
+application:
+  s3:
+    endpoint: https://192.168.1.14:443
+    user:
+    password:
+  seldon:
+    endpoint: http://localhost:9000
+  prediction-min-score: 0.90

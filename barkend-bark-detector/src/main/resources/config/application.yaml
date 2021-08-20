@@ -1,0 +1,33 @@
+spring:
+
+  application:
+    name: bark-detector
+
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: sound-capture
+      enable-auto-commit: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+application:
+  s3:
+    endpoint: ${S3_ENDPOINT}
+    user: ${S3_USER}
+    password: ${S3_PASSWORD}
+  seldon:
+    endpoint: ${SELDON_ENDPOINT}
+  prediction-min-score: 0.90
