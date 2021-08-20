@@ -1,0 +1,14 @@
+[Unit]
+Description=Barkend :: Upload audio to S3
+After=network.target
+
+[Service]
+ExecStart=/opt/barkend/upload-audio-s3.sh
+StandardOutput=syslog
+StandardError=syslog
+User=pi
+Group=pi
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

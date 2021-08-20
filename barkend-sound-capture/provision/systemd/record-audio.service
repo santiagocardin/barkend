@@ -1,0 +1,17 @@
+[Unit]
+Description=Record audio from microphone
+After=network.target
+
+[Service]
+ExecStart=/opt/barkend/record-audio.sh
+Workspace=/opt/barkend
+StandardOutput=syslog
+StandardError=syslog
+User=pi
+Group=pi
+Type=simple
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

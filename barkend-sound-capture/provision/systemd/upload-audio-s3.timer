@@ -1,0 +1,10 @@
+[Unit]
+Description=Barkend :: Timer for upload S3 service
+
+[Timer]
+Unit=upload-audio-s3.service
+OnUnitInactiveSec=5
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
