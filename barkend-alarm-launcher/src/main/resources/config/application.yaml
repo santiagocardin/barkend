@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: alarm-launcher
+
+  kafka:
+    bootstrap-servers: kafka.localnet:9094
+    consumer:
+      group-id: alarm-launcher
+      auto-offset-reset: latest
+      enable-auto-commit: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+application:
+  alarm:
+    endpoint: http://lala.es
+    api-key: test
+    duration: 5s
+    silence-time-start: '23:30'
+    silence-time-end: '07:30'

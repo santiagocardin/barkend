@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "alarm-launcher.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
+    helm.sh/chart: {{ include "alarm-launcher.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ include "alarm-launcher.name" . }}
+    project: barkend
+    version: v1
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ include "alarm-launcher.name" . }}
+        project: barkend
+        version: v1
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image }}"
+          imagePullPolicy: {{ .Values.imageConfig.pullPolicy }}
+          volumeMounts:
+            - name: application-config
+              mountPath: "/opt/app/config"
+              readOnly: true
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              value: "{{ .Values.kafka.servers }}"
+            - name: LOGGING_CONFIG
+              value: "/opt/app/config/logback-spring.xml"
+            - name: APPLICATION_ALARM_ENDPOINT
+              value: "{{ .Values.alarm.endpoint }}"
+            - name: APPLICATION_ALARM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "alarm-launcher.fullname" . }}-secret
+                  key: apikey
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 10
+            periodSeconds: 2
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: application-config
+          configMap:
+            name: alarm-launcher-config

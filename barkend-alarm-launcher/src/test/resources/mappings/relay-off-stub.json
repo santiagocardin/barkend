@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPattern": "/api/relay/0",
+    "headers": {
+      "Accept": {
+        "matches": "application/json"
+      },
+      "Content-Type": {
+        "matches": "application/x-www-form-urlencoded"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matches": "apikey=test&value=0"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "http://espurna.io",
+      "Access-Control-Allow-Credentials": "true"
+    },
+    "jsonBody": {"relay/0": 0}
+  }
+}
+

@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+
+build:
+  artifacts:
+    - image: barkend/alarm-launcher
+      context: .
+      jib: {}
+  local: {}
+
+deploy:
+  helm:
+    releases:
+      - name: alarm-launcher
+        chartPath: charts/alarm-launcher
+        namespace: barkend
+        skipBuildDependencies: true
+        artifactOverrides:
+          image: barkend/alarm-launcher
+        setValueTemplates:
+          alarm.apikey: "{{.SONOFF_APIKEY}}"
