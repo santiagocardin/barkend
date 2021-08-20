@@ -109,7 +109,7 @@ fabric.properties
 .idea/codestream.xml
 
 ### Maven ###
-target/
+barkend-alarm-launcher/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
