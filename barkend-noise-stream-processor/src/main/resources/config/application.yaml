@@ -1,0 +1,35 @@
+spring:
+  cloud:
+    stream:
+
+      function:
+        definition: process
+
+      kafka:
+        binder:
+          brokers: 192.168.1.12:9094
+        streams:
+          binder:
+            applicationId: noise-processor
+            configuration:
+              spring.json.trusted.packages: '*'
+
+      bindings:
+        process-in-0:
+          destination: BARKING_DOG
+          group: noise-processor
+          contentType: application/json
+
+        process-out-0:
+          destination: TOO_NOISY
+          contentType: application/json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+application:
+  time-window: 60s
+  max-barks-allowed: 10

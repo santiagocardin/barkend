@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+
+build:
+  artifacts:
+    - image: barkend/noise-stream-processor
+      context: .
+      jib: {}
+  local: {}
+
+deploy:
+  helm:
+    releases:
+      - name: noise-stream-processor
+        chartPath: charts/noise-stream-processor
+        namespace: barkend
+        skipBuildDependencies: true
+        artifactOverrides:
+          image: barkend/noise-stream-processor

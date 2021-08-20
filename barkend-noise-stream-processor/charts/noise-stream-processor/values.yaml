@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image: barkend/noise-stream-processor
+imageConfig:
+  pullPolicy: IfNotPresent
+
+nameOverride: "noise-stream-processor"
+fullnameOverride: "noise-stream-processor"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 250Mi
+
+kafka:
+  servers: kafka.localnet:9094
