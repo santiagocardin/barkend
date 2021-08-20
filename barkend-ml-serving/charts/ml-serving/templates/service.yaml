@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ml-model.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ml-model.name" . }}
+    helm.sh/chart: {{ include "ml-model.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ include "ml-model.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "ml-model.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

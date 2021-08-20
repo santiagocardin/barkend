@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image: barkend/ml-model
+imageConfig:
+  pullPolicy: IfNotPresent
+
+nameOverride: "ml-model"
+fullnameOverride: "ml-model"
+
+service:
+  type: ClusterIP
+  port: 9000
+
+resources:
+  limits:
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 250Mi

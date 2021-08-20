@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+
+build:
+  artifacts:
+    - image: barkend/ml-serving
+  local: { }
+
+deploy:
+  helm:
+    releases:
+      - name: ml-serving
+        chartPath: charts/ml-serving
+        namespace: barkend
+        skipBuildDependencies: true
+        artifactOverrides:
+          image: barkend/ml-serving
+        setValueTemplates:
+          s3.password: "{{.S3_SECRET}}"
