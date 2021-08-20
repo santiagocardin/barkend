@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "ml-model.fullname" . }}-test-connection"
+  name: "{{ include "ml-serving.fullname" . }}-test-connection"
   labels:
-    app.kubernetes.io/name: {{ include "ml-model.name" . }}
-    helm.sh/chart: {{ include "ml-model.chart" . }}
+    app.kubernetes.io/name: {{ include "ml-serving.name" . }}
+    helm.sh/chart: {{ include "ml-serving.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
@@ -14,5 +14,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "ml-model.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "ml-serving.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

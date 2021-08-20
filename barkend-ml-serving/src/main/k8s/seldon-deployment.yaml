@@ -1,0 +1,25 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+   name: tfserving
+   namespace: barkend
+spec:
+   name: quality
+   predictors:
+   -  name: barkend
+      replicas: 1
+      componentSpecs:
+        - spec:
+            containers:
+              - name: classifier
+                image: 'seldonio/mock_classifier_rest:1.3'
+      graph:
+       children: []
+       endpoint:
+         type: REST
+       #implementation: TENSORFLOW_SERVER
+       #modelUri: s3://seldon/tfserving/barkend-model
+       #envSecretRefName: seldon-s3-model-secret
+       name: classifier
+       type: MODEL
+       parameters: []

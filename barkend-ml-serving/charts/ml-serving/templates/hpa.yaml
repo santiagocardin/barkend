@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "ml-model.name" . }}
+  name: {{ include "ml-serving.name" . }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "ml-model.name" . }}
+    name: {{ include "ml-serving.name" . }}
   minReplicas: 1
   maxReplicas: 2
   targetCPUUtilizationPercentage: 75
