@@ -129,7 +129,7 @@
                 <plugin>
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.1.4</version>
                     <configuration>
                         <from>
                             <image>adoptopenjdk:16-jre-hotspot@sha256:f2d0e6433fa7d172e312bad9d7b46ff227888926f2fe526c731dd4de295ef887</image>
