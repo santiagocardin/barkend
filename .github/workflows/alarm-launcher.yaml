@@ -15,7 +15,14 @@ jobs:
         with:
           java-version: '16'
           distribution: 'adopt'
+          server-id: registry-1.docker.io
+          server-username: DOCKER_USERNAME
+          server-password: DOCKER_PASSWORD #pragma: allowlist secret
+
       - name: Build with Maven
         run: mvn clean package
       - name: Push image to registry
         run: mvn jib:build
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
