@@ -10,7 +10,7 @@ feign:
 
 application:
   alarm:
-    endpoint: http://localhost:${wiremock.server.port:8080}/api/relay
+    endpoint: http://localhost:${wiremock.server.port}/api/relay
     api-key: test
     duration: 1s
     silence-time-start: '23:30'
