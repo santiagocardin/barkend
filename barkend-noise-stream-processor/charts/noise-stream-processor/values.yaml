@@ -19,4 +19,4 @@ resources:
     memory: 250Mi
 
 kafka:
-  servers: kafka.localnet:9094
+  servers: barkend-kafka-bootstrap.kafka:9092

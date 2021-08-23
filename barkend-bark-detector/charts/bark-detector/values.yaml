@@ -19,7 +19,7 @@ resources:
     memory: 250Mi
 
 kafka:
-  servers: 192.168.1.12:9094
+  servers: barkend-kafka-bootstrap.kafka:9092
 
 s3:
   endpoint: https://192.168.1.14:443

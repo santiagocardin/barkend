@@ -19,7 +19,7 @@ resources:
     memory: 250Mi
 
 kafka:
-  servers: kafka.localnet:9094
+  servers: barkend-kafka-bootstrap.kafka:9092
 
 alarm:
   endpoint: http://sonoff.localnet/api/relay
