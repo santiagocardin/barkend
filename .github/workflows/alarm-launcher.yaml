@@ -1,19 +1,21 @@
 name: CI
 on:
-  push
+  push:
     paths:
       - "barkend-alarm-launcher/**"
-      - ".github/workflows/{{ROUTE}}.yaml"
+      - ".github/workflows/alarm-launcher.yaml"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: '16'
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn clean package
+      - name: Push image to registry
+        run: mvn jib:build
