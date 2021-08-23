@@ -31,14 +31,26 @@ TODO...
 
 ## Provision
 
-TODO...
+A local development cluster can be started using the provided _Vagrantfile_:
+
+```shell
+$ vagrant up
+```
+
+Kafka and MinIO services will be provided.
 
 ## Build
 
-In order to build the three Java micro services you need to run:
+In order to build the three Java microservices you need to run:
 
-    $ mvn clean package
+```shell
+$ mvn clean package
+```
 
 ## Deploy
 
-TODO...
+Each service can be deployed to the kubernetes cluster using the following command:
+
+```shell
+$ skaffold run
+```
