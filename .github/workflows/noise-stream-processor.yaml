@@ -1,4 +1,4 @@
-name: CI
+name: CI noise-stream-processor
 on:
   push:
     paths:
@@ -6,7 +6,7 @@ on:
       - ".github/workflows/noise-stream-processor.yaml"
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,9 +20,9 @@ jobs:
           server-password: DOCKER_PASSWORD #pragma: allowlist secret
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn -f barkend-noise-stream-processor clean package
       - name: Push image to registry
-        run: mvn jib:build
+        run: mvn -f barkend-noise-stream-processor jib:build
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

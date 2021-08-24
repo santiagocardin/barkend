@@ -1,4 +1,4 @@
-name: bark-detector
+name: CI bark-detector
 on:
   push:
     paths:
@@ -6,7 +6,7 @@ on:
       - ".github/workflows/bark-detector.yaml"
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
