@@ -3,6 +3,9 @@ set -e
 
 apt-get update -y
 
+export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+export DEBIAN_FRONTEND=noninteractive
+
 # Install Docker
 # Reference: https://docs.docker.com/engine/install/ubuntu/
 apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -13,7 +16,7 @@ apt-get update -y
 apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install kubectl
-curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LOsS "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 mv kubectl /usr/local/bin/ && chmod +x /usr/local/bin/kubectl
 
 # Install helm
@@ -34,3 +37,8 @@ addgroup -a vagrant docker
 wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 
 k3d cluster create barkend --agents 1 --servers 1 --api-port 127.0.0.1:6443 -p 8080:80@loadbalancer
+
+# Configure kube config for vagrant user
+mkdir -p /home/vagrant/.kube
+cp -i /root/.kube/config /home/vagrant/.kube/config
+chown vagrant:vagrant -R /home/vagrant/.kube
