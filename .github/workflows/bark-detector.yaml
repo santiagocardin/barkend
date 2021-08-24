@@ -1,8 +1,8 @@
-name: CI
+name: bark-detector
 on:
   push:
     paths:
-      - "barkend-detector/**"
+      - "barkend-bark-detector/**"
       - ".github/workflows/bark-detector.yaml"
 
 jobs:
@@ -20,9 +20,9 @@ jobs:
           server-password: DOCKER_PASSWORD #pragma: allowlist secret
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn -f barkend-bark-detector clean package
       - name: Push image to registry
-        run: mvn jib:build
+        run: mvn -f barkend-bark-detector jib:build
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
