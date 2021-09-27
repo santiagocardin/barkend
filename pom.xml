@@ -142,7 +142,9 @@
                         </to>
                         <container>
                             <jvmFlags>
-                                <jvmFlag>-XX:+AlwaysPreTouch</jvmFlag>
+                                <jvmFlag>-XX:TieredStopAtLevel=1</jvmFlag>
+								<jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+								<jvmFlag>-noverify</jvmFlag>
                             </jvmFlags>
                         </container>
                     </configuration>
