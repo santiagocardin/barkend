@@ -1,18 +1,29 @@
 {
   "request": {
     "method": "POST",
-    "urlPattern": "/v1/models/barkend:predict"
+    "urlPattern": "/api/v1.0/predictions",
+    "headers": {
+      "Content-Type": {
+        "matches": "application/json"
+      },
+      "Accept": {
+        "matches": "application/json"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.binData"
+      }
+    ]
   },
   "response": {
     "status": 200,
     "jsonBody": {
-      "predictions": [
-        {
-          "air_conditioner": "0.00007508506678",
-          "children_playing": "0.0.1509760320186614990234",
-          "dog_bark": "0.83962621688842773437"
-        }
-      ]
+      "data":  {
+        "names":["birds_chirping","chainsaw","dog_barking","engine","many_dogs_barking","people_talking","siren"],
+        "ndarray":[4.6104686e-11,4.141447e-18,4.2540582e-06,3.838214e-10,0.9999957,8.6327105e-16,7.2169727e-16]
+      },
+      "meta":{}
     },
     "headers": {
       "Content-Type": "application/json"

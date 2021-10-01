@@ -8,5 +8,10 @@ application:
     user:
     password:
   seldon:
-    endpoint: http://localhost:9000
+    endpoint: http://localhost:${wiremock.server.port:9000}
   prediction-min-score: 0.90
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.apache.http: DEBUG
