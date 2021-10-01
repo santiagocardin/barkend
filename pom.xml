@@ -124,7 +124,15 @@
                             </exclude>
                         </excludes>
                     </configuration>
-                </plugin>
+					<executions>
+						<execution>
+							<id>build-info</id>
+							<goals>
+								<goal>build-info</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
                 <plugin>
                     <groupId>com.google.cloud.tools</groupId>
