@@ -17,7 +17,7 @@
     <description>Barkend Project</description>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <lombok.version>1.18.20</lombok.version>
         <spring.cloud.stream.version>3.1.4</spring.cloud.stream.version>
         <spring.cloud.version>3.0.4</spring.cloud.version>
@@ -140,7 +140,7 @@
                     <version>3.1.4</version>
                     <configuration>
                         <from>
-                            <image>adoptopenjdk:16-jre-hotspot@sha256:f2d0e6433fa7d172e312bad9d7b46ff227888926f2fe526c731dd4de295ef887</image>
+                            <image>eclipse-temurin:17-alpine@sha256:e78a9657273fe6d06ab55c0ff65b53cc9f88b3b5e6a2dc791d66b0630cc4cfb9</image>
                         </from>
                         <to>
                             <image>barkend/${project.artifactId}</image>
@@ -152,7 +152,6 @@
                             <jvmFlags>
                                 <jvmFlag>-XX:TieredStopAtLevel=1</jvmFlag>
 								<jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
-								<jvmFlag>-noverify</jvmFlag>
                             </jvmFlags>
                         </container>
                     </configuration>
