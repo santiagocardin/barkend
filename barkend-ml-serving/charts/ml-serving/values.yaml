@@ -19,8 +19,3 @@ resources:
   requests:
     cpu: 100m
     memory: 250Mi
-
-s3:
-  endpoint: https://192.168.1.14:443
-  user: admin
-  password:
