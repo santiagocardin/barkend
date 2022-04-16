@@ -13,8 +13,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '16'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'temurin'
           server-id: registry-1.docker.io
           server-username: DOCKER_USERNAME
           server-password: DOCKER_PASSWORD #pragma: allowlist secret
