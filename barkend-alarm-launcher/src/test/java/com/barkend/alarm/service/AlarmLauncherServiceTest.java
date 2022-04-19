@@ -36,11 +36,12 @@ class AlarmLauncherServiceTest {
 	AlarmLauncherService alarmLauncherService;
 
 	@Test
-	void fireAlarm() {
+	void fireAlarm() throws InterruptedException {
 
 		alarmLauncherService.fireAlarm();
 
 		verify(alarmLauncherService).setRelayStatus(Boolean.TRUE);
+		Thread.sleep(5000);
 		verify(alarmLauncherService).setRelayStatus(Boolean.FALSE);
 	}
 
