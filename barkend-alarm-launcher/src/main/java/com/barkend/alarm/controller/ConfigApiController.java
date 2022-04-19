@@ -1,21 +1,20 @@
-package com.barkend.alarm.web;
+package com.barkend.alarm.controller;
 
-import com.barkend.alarm.api.ConfigApiDelegate;
+import com.barkend.alarm.api.ConfigApi;
 import com.barkend.alarm.config.ApplicationConfig;
+import com.barkend.alarm.controller.mapper.ConfigMapper;
 import com.barkend.alarm.model.AlarmConfiguration;
-import com.barkend.alarm.web.mapper.ConfigMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
-public class ConfigApiDelegateImpl implements ConfigApiDelegate {
+@Controller
+public class ConfigApiController implements ConfigApi {
 
 	private final ApplicationConfig applicationConfig;
 
 	private final ConfigMapper configMapper;
 
-	public ConfigApiDelegateImpl(ApplicationConfig applicationConfig, ConfigMapper configMapper) {
+	public ConfigApiController(ApplicationConfig applicationConfig, ConfigMapper configMapper) {
 		this.applicationConfig = applicationConfig;
 		this.configMapper = configMapper;
 	}
@@ -23,7 +22,7 @@ public class ConfigApiDelegateImpl implements ConfigApiDelegate {
 	@Override
 	public ResponseEntity<AlarmConfiguration> getConfig() {
 		AlarmConfiguration config = configMapper.toModel(applicationConfig);
-		return new ResponseEntity<>(config, HttpStatus.OK);
+		return ResponseEntity.ok(config);
 	}
 
 }

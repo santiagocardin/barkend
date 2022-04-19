@@ -154,8 +154,9 @@
 								ApiUtil.java
 							</supportingFilesToGenerate>
 							<configOptions>
-								<delegatePattern>true</delegatePattern>
+								<delegatePattern>false</delegatePattern>
 							</configOptions>
+							<ignoreFileOverride>${basedir}/.openapi-generator-ignore</ignoreFileOverride>
 						</configuration>
 					</execution>
 				</executions>

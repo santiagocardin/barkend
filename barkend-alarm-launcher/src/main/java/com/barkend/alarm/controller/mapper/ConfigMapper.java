@@ -1,4 +1,4 @@
-package com.barkend.alarm.web.mapper;
+package com.barkend.alarm.controller.mapper;
 
 import com.barkend.alarm.config.ApplicationConfig;
 import com.barkend.alarm.model.AlarmConfiguration;
