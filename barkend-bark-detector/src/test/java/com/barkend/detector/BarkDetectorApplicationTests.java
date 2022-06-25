@@ -16,7 +16,8 @@ import org.testcontainers.utility.DockerImageName;
 class BarkDetectorApplicationTests {
 
 	@Container
-	private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
+	private static final KafkaContainer kafka = new KafkaContainer(
+			DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
 
 	@DynamicPropertySource
 	static void setup(DynamicPropertyRegistry registry) {

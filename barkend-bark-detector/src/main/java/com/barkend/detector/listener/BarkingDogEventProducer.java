@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BarkingDogEventProducer {
 
-	private KafkaTemplate<String, BarkingDogEvent> kafkaTemplate;
+	private final KafkaTemplate<String, BarkingDogEvent> kafkaTemplate;
 
 	public BarkingDogEventProducer(KafkaTemplate<String, BarkingDogEvent> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;

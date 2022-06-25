@@ -8,7 +8,7 @@ application:
   alarm:
     endpoint: http://localhost:${wiremock.server.port}/api/relay
     api-key: test
-    duration: 1s
+    duration: 5s
     silence-time-start: '23:30'
     silence-time-end: '07:30'
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class NewAudioEventConsumer {
 
-	private BarkDetectorService barkDetectorService;
+	private final BarkDetectorService barkDetectorService;
 
 	public NewAudioEventConsumer(BarkDetectorService barkDetectorService) {
 		this.barkDetectorService = barkDetectorService;

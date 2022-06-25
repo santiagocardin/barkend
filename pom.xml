@@ -26,6 +26,8 @@
 		<springdoc-openapi.version>1.6.7</springdoc-openapi.version>
         <hibernate.validator.version>6.0.23.Final</hibernate.validator.version>
         <testcontainers.version>1.17.1</testcontainers.version>
+        <spring.javaformat.version>0.0.31</spring.javaformat.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <modules>
@@ -106,7 +108,7 @@
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <version>0.0.28</version>
+                <version>${spring.javaformat.version}</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>

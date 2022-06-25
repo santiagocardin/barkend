@@ -1,13 +1,20 @@
+server:
+  port: 8080
+  shutdown: GRACEFUL
+
 spring:
   application:
     name: alarm-launcher
 
   kafka:
-    bootstrap-servers:
+    bootstrap-servers: 127.0.0.1:29092
     consumer:
       group-id: alarm-launcher
       auto-offset-reset: latest
       enable-auto-commit: true
+
+  session:
+    store-type: NONE
 
 feign:
   client:
@@ -18,14 +25,26 @@ feign:
         loggerLevel: basic
 
 management:
+  health:
+    defaults:
+      enabled: true
+  endpoint:
+    health:
+      show-details: ALWAYS
   endpoints:
     web:
       exposure:
         include: health,info,refresh,prometheus
 
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.barkend.alarm: INFO
+
 application:
   alarm:
-    endpoint:
+    endpoint: http://lala.es
     api-key:
     duration: 5s
     silence-time-start: '23:30'
