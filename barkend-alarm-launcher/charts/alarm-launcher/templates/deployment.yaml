@@ -3,28 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "alarm-launcher.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-    helm.sh/chart: {{ include "alarm-launcher.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app: {{ include "alarm-launcher.name" . }}
-    project: barkend
-    version: v1
-  namespace: {{ .Release.Namespace }}
+    {{- include "alarm-launcher.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "alarm-launcher.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        app: {{ include "alarm-launcher.name" . }}
-        project: barkend
-        version: v1
+        {{- include "alarm-launcher.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

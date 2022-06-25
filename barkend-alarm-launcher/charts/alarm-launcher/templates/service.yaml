@@ -3,12 +3,7 @@ kind: Service
 metadata:
   name: {{ include "alarm-launcher.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-    helm.sh/chart: {{ include "alarm-launcher.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app: {{ include "alarm-launcher.name" . }}
-    project: barkend
+    {{- include "alarm-launcher.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
   type: {{ .Values.service.type }}
@@ -18,6 +13,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    project: barkend
+    {{- include "alarm-launcher.selectorLabels" . | nindent 4 }}
