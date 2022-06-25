@@ -19,9 +19,6 @@
     <properties>
         <java.version>17</java.version>
         <spring.cloud.version>2021.0.3</spring.cloud.version>
-		<spring.cloud.stream.version>3.2.2</spring.cloud.stream.version>
-		<spring.cloud.openfeign.version>3.1.1</spring.cloud.openfeign.version>
-		<spring.cloud.contract.version>3.1.1</spring.cloud.contract.version>
 		<springdoc-openapi.version>1.6.7</springdoc-openapi.version>
         <testcontainers.version>1.17.2</testcontainers.version>
         <spring.javaformat.version>0.0.31</spring.javaformat.version>
@@ -39,47 +36,25 @@
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-stream-binder-kafka-streams</artifactId>
-                <version>${spring.cloud.stream.version}</version>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${spring.cloud.openfeign.version}</version>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-loadbalancer</artifactId>
-				<version>3.1.1</version>
-			</dependency>
 
             <!-- Testing -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-stream-test-support</artifactId>
-                <version>${spring.cloud.stream.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
-                <version>${spring.cloud.contract.version}</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>${testcontainers.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>kafka</artifactId>
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
