@@ -3,16 +3,13 @@ kind: Pod
 metadata:
   name: "{{ include "alarm-launcher.fullname" . }}-test-connection"
   labels:
-    app.kubernetes.io/name: {{ include "alarm-launcher.name" . }}
-    helm.sh/chart: {{ include "alarm-launcher.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- include "alarm-launcher.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": test-success
+    "helm.sh/hook": test
 spec:
   containers:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "alarm-launcher.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "alarm-launcher.fullname" . }}:{{ .Values.service.port }}/actuator/info']
   restartPolicy: Never
