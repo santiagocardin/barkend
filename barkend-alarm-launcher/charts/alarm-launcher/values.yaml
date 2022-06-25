@@ -11,6 +11,9 @@ service:
   type: ClusterIP
   port: 8080
 
+ingress:
+  enabled: false
+
 resources:
   limits:
     memory: 500Mi
