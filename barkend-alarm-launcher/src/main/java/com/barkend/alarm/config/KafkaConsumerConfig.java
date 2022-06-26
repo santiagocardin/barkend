@@ -32,8 +32,7 @@ public class KafkaConsumerConfig {
 	public DefaultKafkaConsumerFactory pf(KafkaProperties properties) {
 		Map<String, Object> props = properties.buildConsumerProperties();
 		JsonDeserializer jsonDeserializer = new JsonDeserializer(TooNoisyEvent.class);
-		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
-				jsonDeserializer.ignoreTypeHeaders());
+		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(), jsonDeserializer.ignoreTypeHeaders());
 	}
 
 }
