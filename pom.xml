@@ -23,6 +23,7 @@
         <springdoc-openapi.version>1.6.7</springdoc-openapi.version>
         <testcontainers.version>1.17.2</testcontainers.version>
         <spring.javaformat.version>0.0.34</spring.javaformat.version>
+        <openapi.generator.version>5.4.0</openapi.generator.version>
         <jacoco.version>0.8.8</jacoco.version>
         <jib.version>3.2.1</jib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -6,16 +6,14 @@
         <groupId>com.barkend</groupId>
         <artifactId>barkend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
-    <groupId>com.barkend</groupId>
     <artifactId>bark-detector</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>bark-detector</name>
     <description>Barkend :: Bark detector service</description>
 
     <properties>
-        <aws.java.sdk.s3.version>1.11.163</aws.java.sdk.s3.version>
+        <aws.java.sdk.s3.version>1.12.239</aws.java.sdk.s3.version>
     </properties>
 
     <dependencies>
@@ -69,7 +67,7 @@
 		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-annotations</artifactId>
-			<version>1.5.22</version>
+			<version>1.6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
@@ -79,7 +77,7 @@
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
 		</dependency>
 
         <dependency>
@@ -139,7 +137,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.2.1</version>
+                <version>${openapi.generator.version}</version>
                 <executions>
                     <execution>
                         <goals>

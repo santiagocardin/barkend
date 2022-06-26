@@ -3,13 +3,7 @@ kind: Service
 metadata:
   name: {{ include "bark-detector.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "bark-detector.name" . }}
-    helm.sh/chart: {{ include "bark-detector.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app: {{ include "bark-detector.name" . }}
-    project: barkend
-  namespace: {{ .Release.Namespace }}
+    {{- include "bark-detector.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -18,6 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "bark-detector.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    project: barkend
+    {{- include "bark-detector.selectorLabels" . | nindent 4 }}
