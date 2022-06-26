@@ -22,7 +22,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springdoc-openapi.version>1.6.7</springdoc-openapi.version>
         <testcontainers.version>1.17.2</testcontainers.version>
-        <spring.javaformat.version>0.0.31</spring.javaformat.version>
+        <spring.javaformat.version>0.0.34</spring.javaformat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
