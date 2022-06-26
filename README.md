@@ -1,3 +1,7 @@
+[![CI alarm-launcher](https://github.com/santiagocardin/barkend/actions/workflows/alarm-launcher.yaml/badge.svg)](https://github.com/santiagocardin/barkend/actions/workflows/alarm-launcher.yaml)
+[![CI bark-detector](https://github.com/santiagocardin/barkend/actions/workflows/bark-detector.yaml/badge.svg)](https://github.com/santiagocardin/barkend/actions/workflows/bark-detector.yaml)
+[![CI noise-stream-processor](https://github.com/santiagocardin/barkend/actions/workflows/noise-stream-processor.yaml/badge.svg)](https://github.com/santiagocardin/barkend/actions/workflows/noise-stream-processor.yaml)
+
 # Barkend project
 
 The "barkend" project enables sound recording and processing continuously, identifying specific sounds and reacting to them. More specifically, the system is designed to trigger a heavy-duty alarm whenever it detects dogs barking for a duration of time.
