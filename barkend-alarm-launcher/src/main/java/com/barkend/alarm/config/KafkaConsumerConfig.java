@@ -10,32 +10,30 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *//*
-	 *
-	 *
-	 * package com.barkend.alarm.config;
-	 *
-	 * import java.util.Map;
-	 *
-	 * import com.barkend.alarm.model.TooNoisyEvent; import
-	 * org.apache.kafka.common.serialization.StringDeserializer;
-	 *
-	 * import org.springframework.boot.autoconfigure.kafka.KafkaProperties; import
-	 * org.springframework.context.annotation.Bean; import
-	 * org.springframework.context.annotation.Configuration; import
-	 * org.springframework.kafka.annotation.EnableKafka; import
-	 * org.springframework.kafka.core.DefaultKafkaConsumerFactory; import
-	 * org.springframework.kafka.support.serializer.JsonDeserializer;
-	 *
-	 * @EnableKafka
-	 *
-	 * @Configuration public class KafkaConsumerConfig {
-	 *
-	 * @Bean public DefaultKafkaConsumerFactory pf(KafkaProperties properties) {
-	 * Map<String, Object> props = properties.buildConsumerProperties();
-	 * DefaultKafkaConsumerFactory cf = new DefaultKafkaConsumerFactory(props, new
-	 * StringDeserializer(), new
-	 * JsonDeserializer<>(TooNoisyEvent.class).ignoreTypeHeaders()); return cf; }
-	 *
-	 * }
-	 */
+ */
+package com.barkend.alarm.config;
+
+import com.barkend.alarm.model.TooNoisyEvent;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import java.util.Map;
+
+@EnableKafka
+@Configuration
+public class KafkaConsumerConfig {
+
+	@Bean
+	public DefaultKafkaConsumerFactory pf(KafkaProperties properties) {
+		Map<String, Object> props = properties.buildConsumerProperties();
+		DefaultKafkaConsumerFactory cf = new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
+				new JsonDeserializer<>(TooNoisyEvent.class).ignoreTypeHeaders());
+		return cf;
+	}
+
+}
