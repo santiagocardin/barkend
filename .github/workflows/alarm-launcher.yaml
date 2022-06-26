@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis      
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -18,9 +20,24 @@ jobs:
           server-id: registry-1.docker.io
           server-username: DOCKER_USERNAME
           server-password: DOCKER_PASSWORD #pragma: allowlist secret
-
-      - name: Build with Maven
-        run: mvn -f barkend-alarm-launcher clean package
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        run: mvn -f barkend-alarm-launcher clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=alarm-launcher
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
       - name: Push image to registry
         run: mvn -f barkend-alarm-launcher jib:build
         env:
