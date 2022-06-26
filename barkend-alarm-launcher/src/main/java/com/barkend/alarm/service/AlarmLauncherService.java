@@ -35,7 +35,7 @@ public class AlarmLauncherService {
 
 	private final ApplicationConfig applicationConfig;
 
-	public void fireAlarm() {
+	public void fireAlarm() throws InterruptedException {
 
 		if (timeWithinFiringPeriod(LocalTime.now())) {
 
@@ -70,13 +70,8 @@ public class AlarmLauncherService {
 		this.relayManagementClient.switchRelay(request);
 	}
 
-	private void playAlarm(Duration duration) {
-		try {
-			Thread.sleep(duration.toMillis());
-		}
-		catch (InterruptedException ex) {
-			log.error("Error timing out alarm", ex);
-		}
+	private void playAlarm(Duration duration) throws InterruptedException {
+		Thread.sleep(duration.toMillis());
 	}
 
 }
