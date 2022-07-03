@@ -21,6 +21,7 @@ public class ChainsawHandler implements SoundHandler {
 	@Override
 	public void handle(SoundClip clip) {
 
+		// We are not interested in this sound
 		log.debug("Clip {} contains chainsaw. Deleting...", clip.getName());
 
 		s3Repository.deleteFile(clip.getName());

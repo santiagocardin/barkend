@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,14 +26,17 @@ public class ManyDogsBarkingHandler implements SoundHandler {
 	@Override
 	public void handle(SoundClip clip) {
 
-		Prediction prediction = clip.getMostProbablePrediction().get();
+		Optional<Prediction> prediction = clip.getMostProbablePrediction();
 
-		log.info("Clip {} contains many dogs barking ({}). Creating event...", clip.getName(), prediction.getScore());
+		if (prediction.isPresent()) {
+			log.info("Clip {} contains many dogs barking ({}). Creating event...", clip.getName(),
+					prediction.get().getScore());
 
-		barkingDogEventProducer.sendBarkingDogEvent(BarkingDogEvent.builder().type("many-dogs").build());
+			barkingDogEventProducer.sendBarkingDogEvent(BarkingDogEvent.builder().type("many-dogs").build());
 
-		s3Repository.addTagToFile(clip.getName(),
-				List.of(new Tag("bark", "many-dogs"), new Tag("prediction", prediction.getScore().toString())));
+			s3Repository.addTagToFile(clip.getName(), List.of(new Tag("bark", "many-dogs"),
+					new Tag("prediction", prediction.get().getScore().toString())));
+		}
 	}
 
 }

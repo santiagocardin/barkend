@@ -45,13 +45,11 @@ public class BarkDetectorService {
 				loadPredictions(clip, response);
 
 				// Handle sound
-				Prediction prediction = clip.getMostProbablePrediction().get();
-				if (prediction.getScore() >= applicationConfig.getPredictionMinScore()) {
-					commandHandlersMap.get(prediction.getCategory().getName()).handle(clip);
-				}
-				else {
-					s3Repository.deleteFile(clip.getName());
-				}
+				clip.getMostProbablePrediction().ifPresentOrElse(prediction -> {
+					if (prediction.getScore() >= applicationConfig.getPredictionMinScore()) {
+						commandHandlersMap.get(prediction.getCategory().getName()).handle(clip);
+					}
+				}, () -> s3Repository.deleteFile(clip.getName()));
 			}
 			else {
 				log.debug("Ignored tagged clip {}", clipName);
@@ -67,19 +65,21 @@ public class BarkDetectorService {
 		assert response.getData() != null;
 
 		List<String> names = response.getData().getNames();
-		for (int i = 0; i < names.size(); i++) {
+		if (names != null) {
+			for (int i = 0; i < names.size(); i++) {
 
-			String name = names.get(i);
+				String name = names.get(i);
 
-			Prediction p = null;
-			if (response.getData().getNdarray() != null) {
+				Prediction p = null;
+				if (response.getData().getNdarray() != null) {
 
-				Double pValue = (Double) response.getData().getNdarray().get(i);
+					Double pValue = (Double) response.getData().getNdarray().get(i);
 
-				p = Prediction.builder().category(AudioCategory.valueOfLabel(name)).score(pValue).build();
+					p = Prediction.builder().category(AudioCategory.valueOfLabel(name)).score(pValue).build();
+				}
+
+				clip.addPrediction(p);
 			}
-
-			clip.addPrediction(p);
 		}
 	}
 
