@@ -18,10 +18,12 @@ package com.barkend.alarm.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +33,11 @@ import java.time.format.DateTimeFormatter;
 @Validated
 @Data
 public class ApplicationConfig {
+
+	@Bean
+	public Clock clock() {
+		return Clock.systemDefaultZone();
+	}
 
 	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 

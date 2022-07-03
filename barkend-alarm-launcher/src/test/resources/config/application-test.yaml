@@ -1,3 +1,11 @@
+spring:
+  kafka:
+    bootstrap-servers:
+    consumer:
+      group-id: alarm-launcher
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+
 feign:
   client:
     config:
@@ -15,3 +23,4 @@ application:
 logging:
   level:
     com.barkend.alarm.client: DEBUG
+    org.apache.kafka: INFO

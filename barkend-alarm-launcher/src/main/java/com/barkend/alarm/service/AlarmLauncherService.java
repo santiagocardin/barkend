@@ -16,6 +16,7 @@
 
 package com.barkend.alarm.service;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -35,9 +36,11 @@ public class AlarmLauncherService {
 
 	private final ApplicationConfig applicationConfig;
 
+	private final Clock clock;
+
 	public void fireAlarm() throws InterruptedException {
 
-		if (timeWithinFiringPeriod(LocalTime.now())) {
+		if (timeWithinFiringPeriod(LocalTime.now(clock))) {
 
 			log.info("Starting alarm...");
 			setRelayStatus(Boolean.TRUE);
@@ -48,7 +51,7 @@ public class AlarmLauncherService {
 			setRelayStatus(Boolean.FALSE);
 		}
 		else {
-			log.info("Time within silence period ({} to {}). Alarm won't be fired.",
+			log.info("Time {} within silence period ({} to {}). Alarm won't be fired.", LocalTime.now(clock),
 					this.applicationConfig.silenceTimeStart(), this.applicationConfig.silenceTimeEnd());
 		}
 	}

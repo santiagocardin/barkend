@@ -16,23 +16,26 @@
 
 package com.barkend.alarm.service;
 
-import java.time.LocalTime;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.KafkaContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Testcontainers
@@ -46,30 +49,42 @@ class AlarmLauncherServiceTest {
 
 	@DynamicPropertySource
 	static void setup(DynamicPropertyRegistry registry) {
+		kafka.start();
 		registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
 	}
 
 	@SpyBean
 	AlarmLauncherService alarmLauncherService;
 
+	@MockBean
+	Clock clock;
+
+	@BeforeEach
+	void setupClock() {
+		when(clock.getZone()).thenReturn(ZoneId.of("Europe/Madrid"));
+	}
+
 	@Test
-	void fireAlarm() throws InterruptedException {
+	void shouldFireAlarm() throws InterruptedException {
+
+		when(clock.instant()).thenReturn(Instant.parse("2020-12-01T10:05:23.653Z"));
 
 		this.alarmLauncherService.fireAlarm();
 
 		verify(this.alarmLauncherService).setRelayStatus(Boolean.TRUE);
-		Thread.sleep(5000);
-		verify(this.alarmLauncherService).setRelayStatus(Boolean.FALSE);
+		await().untilAsserted(() -> {
+			verify(this.alarmLauncherService).setRelayStatus(Boolean.FALSE);
+		});
 	}
 
 	@Test
-	void timeWithinFiringPeriod() {
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(20, 00))).isTrue();
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(8, 00))).isTrue();
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(16, 00))).isTrue();
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(10, 00))).isTrue();
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(01, 00))).isFalse();
-		assertThat(this.alarmLauncherService.timeWithinFiringPeriod(LocalTime.of(07, 00))).isFalse();
+	void shouldNotFireAlarmAtNight() throws InterruptedException {
+
+		when(clock.instant()).thenReturn(Instant.parse("2020-12-01T05:05:23.653Z"));
+
+		this.alarmLauncherService.fireAlarm();
+
+		verify(this.alarmLauncherService, times(0)).setRelayStatus(anyBoolean());
 	}
 
 }
