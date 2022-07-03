@@ -18,7 +18,6 @@ import com.barkend.alarm.model.TooNoisyEvent;
 import com.barkend.alarm.service.AlarmLauncherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -32,18 +31,12 @@ public class TooNoisyEventConsumer {
 	private final AlarmLauncherService alarmLauncherService;
 
 	@KafkaListener(topics = "TOO_NOISY")
-	public void processNewAudio(TooNoisyEvent event) {
+	public void processNewAudio(TooNoisyEvent event) throws InterruptedException {
 
 		final String reason = event.getReason();
 
 		log.info("Firing alarm due to {}", reason);
-
-		try {
-			this.alarmLauncherService.fireAlarm();
-		}
-		catch (Exception ex) {
-			log.error("Error firing alarm. Reason: {}", ex.getLocalizedMessage());
-		}
+		this.alarmLauncherService.fireAlarm();
 	}
 
 }
