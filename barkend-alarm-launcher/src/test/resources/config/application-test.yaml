@@ -5,6 +5,12 @@ spring:
       group-id: alarm-launcher
       auto-offset-reset: earliest
       enable-auto-commit: true
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
 
 feign:
   client:

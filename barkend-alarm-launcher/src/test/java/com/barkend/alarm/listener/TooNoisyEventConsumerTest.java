@@ -46,7 +46,7 @@ class TooNoisyEventConsumerTest {
 	AlarmLauncherService service;
 
 	@Test
-	void shouldTriggerAlamar() {
+	void shouldTriggerAlarm() {
 
 		TooNoisyEvent tne = new TooNoisyEvent();
 		tne.setReason("testing");
