@@ -1,6 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers: 192.168.1.12:9094
+    consumer:
+      auto-offset-reset: earliest
 
 application:
   s3:
