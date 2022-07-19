@@ -15,19 +15,18 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class SeldonClientConfig {
 
-	@Value("${application.seldon.endpoint}")
-	private String endpoint;
+  @Value("${application.seldon.endpoint}")
+  private String endpoint;
 
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.requestFactory(HttpComponentsClientHttpRequestFactory.class).build();
-	}
+  @Bean
+  public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+    return restTemplateBuilder.requestFactory(HttpComponentsClientHttpRequestFactory.class).build();
+  }
 
-	@Bean
-	@Primary
-	public ExternalAmbassadorApiApi seldonApi(ApiClient apiClient) {
-		apiClient.setBasePath(endpoint);
-		return new ExternalAmbassadorApiApi(apiClient);
-	}
-
+  @Bean
+  @Primary
+  public ExternalAmbassadorApiApi seldonApi(ApiClient apiClient) {
+    apiClient.setBasePath(endpoint);
+    return new ExternalAmbassadorApiApi(apiClient);
+  }
 }

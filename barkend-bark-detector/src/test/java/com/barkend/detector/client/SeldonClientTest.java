@@ -1,5 +1,7 @@
 package com.barkend.detector.client;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.barkend.detector.client.model.SeldonMessage;
 import com.barkend.detector.model.SoundClip;
 import org.junit.jupiter.api.Test;
@@ -14,36 +16,32 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
 @AutoConfigureWireMock(port = 0)
 class SeldonClientTest {
 
-	@Container
-	private static final KafkaContainer kafka = new KafkaContainer(
-			DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
+  @Container
+  private static final KafkaContainer kafka =
+      new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
 
-	@DynamicPropertySource
-	static void setup(DynamicPropertyRegistry registry) {
-		kafka.start();
-		registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
-	}
+  @DynamicPropertySource
+  static void setup(DynamicPropertyRegistry registry) {
+    kafka.start();
+    registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+  }
 
-	@Autowired
-	SeldonClient seldonClient;
+  @Autowired SeldonClient seldonClient;
 
-	@Test
-	public void predictBarkClip() {
+  @Test
+  public void predictBarkClip() {
 
-		SoundClip clip = new SoundClip();
-		clip.setContent("fakecontent".getBytes());
-		SeldonMessage prediction = seldonClient.predict(clip);
-		Double dog = (Double) prediction.getData().getNdarray().get(4);
+    SoundClip clip = new SoundClip();
+    clip.setContent("fakecontent".getBytes());
+    SeldonMessage prediction = seldonClient.predict(clip);
+    Double dog = (Double) prediction.getData().getNdarray().get(4);
 
-		assertEquals(dog, 0.9999957);
-	}
-
+    assertEquals(dog, 0.9999957);
+  }
 }

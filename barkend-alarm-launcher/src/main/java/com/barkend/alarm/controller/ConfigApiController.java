@@ -20,7 +20,6 @@ import com.barkend.alarm.api.ConfigApi;
 import com.barkend.alarm.config.ApplicationConfig;
 import com.barkend.alarm.controller.mapper.ConfigMapper;
 import com.barkend.alarm.model.AlarmConfiguration;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,19 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("alarm-launcher")
 public class ConfigApiController implements ConfigApi {
 
-	private final ApplicationConfig applicationConfig;
+  private final ApplicationConfig applicationConfig;
 
-	private final ConfigMapper configMapper;
+  private final ConfigMapper configMapper;
 
-	public ConfigApiController(ApplicationConfig applicationConfig, ConfigMapper configMapper) {
-		this.applicationConfig = applicationConfig;
-		this.configMapper = configMapper;
-	}
+  public ConfigApiController(ApplicationConfig applicationConfig, ConfigMapper configMapper) {
+    this.applicationConfig = applicationConfig;
+    this.configMapper = configMapper;
+  }
 
-	@Override
-	public ResponseEntity<AlarmConfiguration> getConfig() {
-		AlarmConfiguration config = this.configMapper.toModel(this.applicationConfig);
-		return ResponseEntity.ok(config);
-	}
-
+  @Override
+  public ResponseEntity<AlarmConfiguration> getConfig() {
+    AlarmConfiguration config = this.configMapper.toModel(this.applicationConfig);
+    return ResponseEntity.ok(config);
+  }
 }

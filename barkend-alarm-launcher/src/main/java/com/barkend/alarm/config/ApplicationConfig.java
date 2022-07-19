@@ -16,17 +16,16 @@
 
 package com.barkend.alarm.config;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotBlank;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @Configuration
 @ConfigurationProperties("application.alarm")
@@ -34,50 +33,37 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class ApplicationConfig {
 
-	@Bean
-	public Clock clock() {
-		return Clock.systemDefaultZone();
-	}
+  @Bean
+  public Clock clock() {
+    return Clock.systemDefaultZone();
+  }
 
-	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+  private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-	/**
-	 * HTTP endpoint exposed by the alarm appliance
-	 */
-	@NotBlank
-	private String endpoint;
+  /** HTTP endpoint exposed by the alarm appliance */
+  @NotBlank private String endpoint;
 
-	/**
-	 * API Key for the alarm appliance
-	 */
-	@NotBlank
-	private String apiKey;
+  /** API Key for the alarm appliance */
+  @NotBlank private String apiKey;
 
-	/**
-	 * Duration of the alarm, in seconds
-	 */
-	private Duration duration;
+  /** Duration of the alarm, in seconds */
+  private Duration duration;
 
-	/**
-	 * Begin time for silence period, eg: 23:00
-	 */
-	private String silenceTimeStart;
+  /** Begin time for silence period, eg: 23:00 */
+  private String silenceTimeStart;
 
-	/**
-	 * End time for silence period, eg: 07:00
-	 */
-	private String silenceTimeEnd;
+  /** End time for silence period, eg: 07:00 */
+  private String silenceTimeEnd;
 
-	public LocalTime silenceTimeStart() {
-		return LocalTime.parse(this.silenceTimeStart, TIME_FORMATTER);
-	}
+  public LocalTime silenceTimeStart() {
+    return LocalTime.parse(this.silenceTimeStart, TIME_FORMATTER);
+  }
 
-	public LocalTime silenceTimeEnd() {
-		return LocalTime.parse(this.silenceTimeEnd, TIME_FORMATTER);
-	}
+  public LocalTime silenceTimeEnd() {
+    return LocalTime.parse(this.silenceTimeEnd, TIME_FORMATTER);
+  }
 
-	public boolean isSilenceTimeConfigured() {
-		return (this.silenceTimeStart != null && this.silenceTimeEnd != null);
-	}
-
+  public boolean isSilenceTimeConfigured() {
+    return (this.silenceTimeStart != null && this.silenceTimeEnd != null);
+  }
 }

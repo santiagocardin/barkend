@@ -16,19 +16,17 @@
 
 package com.barkend.alarm.controller.mapper;
 
-import java.time.Duration;
-
 import com.barkend.alarm.config.ApplicationConfig;
 import com.barkend.alarm.model.AlarmConfiguration;
+import java.time.Duration;
 import org.mapstruct.Mapper;
 
 @Mapper
 public interface ConfigMapper {
 
-	default Integer map(Duration value) {
-		return Math.toIntExact(value.toSeconds());
-	}
+  default Integer map(Duration value) {
+    return Math.toIntExact(value.toSeconds());
+  }
 
-	AlarmConfiguration toModel(ApplicationConfig config);
-
+  AlarmConfiguration toModel(ApplicationConfig config);
 }

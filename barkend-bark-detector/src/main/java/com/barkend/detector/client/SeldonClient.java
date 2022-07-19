@@ -12,20 +12,19 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class SeldonClient {
 
-	private final ExternalAmbassadorApiApi api;
+  private final ExternalAmbassadorApiApi api;
 
-	public SeldonMessage predict(SoundClip soundClip) {
+  public SeldonMessage predict(SoundClip soundClip) {
 
-		Assert.notNull(soundClip, "Sound clip must not be null");
-		Assert.notNull(soundClip.getContent(), "Sound clip content must not be null");
+    Assert.notNull(soundClip, "Sound clip must not be null");
+    Assert.notNull(soundClip.getContent(), "Sound clip content must not be null");
 
-		SeldonMessage message = new SeldonMessage();
-		message.setBinData(soundClip.getContent());
+    SeldonMessage message = new SeldonMessage();
+    message.setBinData(soundClip.getContent());
 
-		DefaultData data = new DefaultData();
-		message.setData(data);
+    DefaultData data = new DefaultData();
+    message.setData(data);
 
-		return api.predict("A", "B", message);
-	}
-
+    return api.predict("A", "B", message);
+  }
 }

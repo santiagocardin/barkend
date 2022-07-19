@@ -16,15 +16,13 @@
 
 package com.barkend.alarm.service;
 
+import com.barkend.alarm.client.RelayManagementClient;
+import com.barkend.alarm.config.ApplicationConfig;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalTime;
-
-import com.barkend.alarm.client.RelayManagementClient;
-import com.barkend.alarm.config.ApplicationConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,49 +30,50 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AlarmLauncherService {
 
-	private final RelayManagementClient relayManagementClient;
+  private final RelayManagementClient relayManagementClient;
 
-	private final ApplicationConfig applicationConfig;
+  private final ApplicationConfig applicationConfig;
 
-	private final Clock clock;
+  private final Clock clock;
 
-	public void fireAlarm() throws InterruptedException {
+  public void fireAlarm() throws InterruptedException {
 
-		if (timeWithinFiringPeriod(LocalTime.now(clock))) {
+    if (timeWithinFiringPeriod(LocalTime.now(clock))) {
 
-			log.info("Starting alarm...");
-			setRelayStatus(Boolean.TRUE);
+      log.info("Starting alarm...");
+      setRelayStatus(Boolean.TRUE);
 
-			playAlarm(this.applicationConfig.getDuration());
+      playAlarm(this.applicationConfig.getDuration());
 
-			log.info("Stopping alarm...");
-			setRelayStatus(Boolean.FALSE);
-		}
-		else {
-			log.info("Time {} within silence period ({} to {}). Alarm won't be fired.", LocalTime.now(clock),
-					this.applicationConfig.silenceTimeStart(), this.applicationConfig.silenceTimeEnd());
-		}
-	}
+      log.info("Stopping alarm...");
+      setRelayStatus(Boolean.FALSE);
+    } else {
+      log.info(
+          "Time {} within silence period ({} to {}). Alarm won't be fired.",
+          LocalTime.now(clock),
+          this.applicationConfig.silenceTimeStart(),
+          this.applicationConfig.silenceTimeEnd());
+    }
+  }
 
-	protected boolean timeWithinFiringPeriod(LocalTime time) {
-		if (this.applicationConfig.isSilenceTimeConfigured()) {
-			return time.isBefore(this.applicationConfig.silenceTimeStart())
-					&& time.isAfter(this.applicationConfig.silenceTimeEnd());
-		}
+  protected boolean timeWithinFiringPeriod(LocalTime time) {
+    if (this.applicationConfig.isSilenceTimeConfigured()) {
+      return time.isBefore(this.applicationConfig.silenceTimeStart())
+          && time.isAfter(this.applicationConfig.silenceTimeEnd());
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	protected void setRelayStatus(boolean status) {
+  protected void setRelayStatus(boolean status) {
 
-		String bodyFormat = "apikey=%s&value=%d";
-		String request = String.format(bodyFormat, this.applicationConfig.getApiKey(), status ? 1 : 0);
+    String bodyFormat = "apikey=%s&value=%d";
+    String request = String.format(bodyFormat, this.applicationConfig.getApiKey(), status ? 1 : 0);
 
-		this.relayManagementClient.switchRelay(request);
-	}
+    this.relayManagementClient.switchRelay(request);
+  }
 
-	private void playAlarm(Duration duration) throws InterruptedException {
-		Thread.sleep(duration.toMillis());
-	}
-
+  private void playAlarm(Duration duration) throws InterruptedException {
+    Thread.sleep(duration.toMillis());
+  }
 }

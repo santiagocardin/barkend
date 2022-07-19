@@ -9,6 +9,5 @@ import lombok.Data;
 @JsonAutoDetect
 public class BarkingDogEvent {
 
-	private String type;
-
+  private String type;
 }

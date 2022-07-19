@@ -7,36 +7,40 @@ import com.barkend.detector.model.BarkingDogEvent;
 import com.barkend.detector.model.Prediction;
 import com.barkend.detector.model.SoundClip;
 import com.barkend.detector.repository.S3Repository;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service(AudioCategory.DOGS_)
 public class ManyDogsBarkingHandler implements SoundHandler {
 
-	private final BarkingDogEventProducer barkingDogEventProducer;
+  private final BarkingDogEventProducer barkingDogEventProducer;
 
-	private final S3Repository s3Repository;
+  private final S3Repository s3Repository;
 
-	@Override
-	public void handle(SoundClip clip) {
+  @Override
+  public void handle(SoundClip clip) {
 
-		Optional<Prediction> prediction = clip.getMostProbablePrediction();
+    Optional<Prediction> prediction = clip.getMostProbablePrediction();
 
-		if (prediction.isPresent()) {
-			log.info("Clip {} contains many dogs barking ({}). Creating event...", clip.getName(),
-					prediction.get().getScore());
+    if (prediction.isPresent()) {
+      log.info(
+          "Clip {} contains many dogs barking ({}). Creating event...",
+          clip.getName(),
+          prediction.get().getScore());
 
-			barkingDogEventProducer.sendBarkingDogEvent(BarkingDogEvent.builder().type("many-dogs").build());
+      barkingDogEventProducer.sendBarkingDogEvent(
+          BarkingDogEvent.builder().type("many-dogs").build());
 
-			s3Repository.addTagToFile(clip.getName(), List.of(new Tag("bark", "many-dogs"),
-					new Tag("prediction", prediction.get().getScore().toString())));
-		}
-	}
-
+      s3Repository.addTagToFile(
+          clip.getName(),
+          List.of(
+              new Tag("bark", "many-dogs"),
+              new Tag("prediction", prediction.get().getScore().toString())));
+    }
+  }
 }

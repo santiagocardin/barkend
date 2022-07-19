@@ -16,6 +16,12 @@
 
 package com.barkend.alarm.service;
 
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.*;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,61 +36,53 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-
-import static org.awaitility.Awaitility.await;
-import static org.mockito.Mockito.*;
-
 @SpringBootTest
 @Testcontainers
 @AutoConfigureWireMock(port = 0)
 @ActiveProfiles("test")
 class AlarmLauncherServiceTest {
 
-	@Container
-	private static final KafkaContainer kafka = new KafkaContainer(
-			DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
+  @Container
+  private static final KafkaContainer kafka =
+      new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
 
-	@DynamicPropertySource
-	static void setup(DynamicPropertyRegistry registry) {
-		kafka.start();
-		registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
-	}
+  @DynamicPropertySource
+  static void setup(DynamicPropertyRegistry registry) {
+    kafka.start();
+    registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+  }
 
-	@SpyBean
-	AlarmLauncherService alarmLauncherService;
+  @SpyBean AlarmLauncherService alarmLauncherService;
 
-	@MockBean
-	Clock clock;
+  @MockBean Clock clock;
 
-	@BeforeEach
-	void setupClock() {
-		when(clock.getZone()).thenReturn(ZoneId.of("Europe/Madrid"));
-	}
+  @BeforeEach
+  void setupClock() {
+    when(clock.getZone()).thenReturn(ZoneId.of("Europe/Madrid"));
+  }
 
-	@Test
-	void shouldFireAlarm() throws InterruptedException {
+  @Test
+  void shouldFireAlarm() throws InterruptedException {
 
-		when(clock.instant()).thenReturn(Instant.parse("2020-12-01T10:05:23.653Z"));
+    when(clock.instant()).thenReturn(Instant.parse("2020-12-01T10:05:23.653Z"));
 
-		this.alarmLauncherService.fireAlarm();
+    this.alarmLauncherService.fireAlarm();
 
-		verify(this.alarmLauncherService).setRelayStatus(Boolean.TRUE);
-		await().untilAsserted(() -> {
-			verify(this.alarmLauncherService).setRelayStatus(Boolean.FALSE);
-		});
-	}
+    verify(this.alarmLauncherService).setRelayStatus(Boolean.TRUE);
+    await()
+        .untilAsserted(
+            () -> {
+              verify(this.alarmLauncherService).setRelayStatus(Boolean.FALSE);
+            });
+  }
 
-	@Test
-	void shouldNotFireAlarmAtNight() throws InterruptedException {
+  @Test
+  void shouldNotFireAlarmAtNight() throws InterruptedException {
 
-		when(clock.instant()).thenReturn(Instant.parse("2020-12-01T05:05:23.653Z"));
+    when(clock.instant()).thenReturn(Instant.parse("2020-12-01T05:05:23.653Z"));
 
-		this.alarmLauncherService.fireAlarm();
+    this.alarmLauncherService.fireAlarm();
 
-		verify(this.alarmLauncherService, times(0)).setRelayStatus(anyBoolean());
-	}
-
+    verify(this.alarmLauncherService, times(0)).setRelayStatus(anyBoolean());
+  }
 }

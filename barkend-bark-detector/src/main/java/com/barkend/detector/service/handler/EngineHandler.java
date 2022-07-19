@@ -12,15 +12,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EngineHandler implements SoundHandler {
 
-	private final S3Repository s3Repository;
+  private final S3Repository s3Repository;
 
-	@Override
-	public void handle(SoundClip clip) {
+  @Override
+  public void handle(SoundClip clip) {
 
-		// We are not interested in this sound
-		log.debug("Clip {} contains engine. Deleting...", clip.getName());
+    // We are not interested in this sound
+    log.debug("Clip {} contains engine. Deleting...", clip.getName());
 
-		s3Repository.deleteFile(clip.getName());
-	}
-
+    s3Repository.deleteFile(clip.getName());
+  }
 }

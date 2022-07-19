@@ -18,24 +18,21 @@ import org.testcontainers.utility.DockerImageName;
 @ActiveProfiles("test")
 class BarkingDogEventProducerTest {
 
-	@Container
-	private static final KafkaContainer kafka = new KafkaContainer(
-			DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
+  @Container
+  private static final KafkaContainer kafka =
+      new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.0"));
 
-	@DynamicPropertySource
-	static void setup(DynamicPropertyRegistry registry) {
-		kafka.start();
-		registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
-	}
+  @DynamicPropertySource
+  static void setup(DynamicPropertyRegistry registry) {
+    kafka.start();
+    registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+  }
 
-	@Autowired
-	BarkingDogEventProducer eventProducer;
+  @Autowired BarkingDogEventProducer eventProducer;
 
-	@Test
-	@Disabled
-	void sendBarkingDogEvent() throws InterruptedException {
-		eventProducer.sendBarkingDogEvent(BarkingDogEvent.builder().type("many-dogs").build());
-
-	}
-
+  @Test
+  @Disabled
+  void sendBarkingDogEvent() throws InterruptedException {
+    eventProducer.sendBarkingDogEvent(BarkingDogEvent.builder().type("many-dogs").build());
+  }
 }

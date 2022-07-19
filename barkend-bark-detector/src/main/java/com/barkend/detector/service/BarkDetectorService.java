@@ -8,79 +8,78 @@ import com.barkend.detector.model.Prediction;
 import com.barkend.detector.model.SoundClip;
 import com.barkend.detector.repository.S3Repository;
 import com.barkend.detector.service.handler.SoundHandler;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BarkDetectorService {
 
-	private final S3Repository s3Repository;
+  private final S3Repository s3Repository;
 
-	private final SeldonClient seldonClient;
+  private final SeldonClient seldonClient;
 
-	private final Map<String, SoundHandler> commandHandlersMap;
+  private final Map<String, SoundHandler> commandHandlersMap;
 
-	private final ApplicationConfig applicationConfig;
+  private final ApplicationConfig applicationConfig;
 
-	public void processClip(final String clipName) {
+  public void processClip(final String clipName) {
 
-		log.debug("Processing new audio file {} ...", clipName);
+    log.debug("Processing new audio file {} ...", clipName);
 
-		try {
+    try {
 
-			SoundClip clip = s3Repository.downloadFile(clipName);
-			log.debug("File {} successfully downloaded", clip.getName());
+      SoundClip clip = s3Repository.downloadFile(clipName);
+      log.debug("File {} successfully downloaded", clip.getName());
 
-			if (clip.getTags().isEmpty()) {
+      if (clip.getTags().isEmpty()) {
 
-				// Call ML engine
-				SeldonMessage response = seldonClient.predict(clip);
-				loadPredictions(clip, response);
+        // Call ML engine
+        SeldonMessage response = seldonClient.predict(clip);
+        loadPredictions(clip, response);
 
-				// Handle sound
-				clip.getMostProbablePrediction().ifPresentOrElse(prediction -> {
-					if (prediction.getScore() >= applicationConfig.getPredictionMinScore()) {
-						commandHandlersMap.get(prediction.getCategory().getName()).handle(clip);
-					}
-				}, () -> s3Repository.deleteFile(clip.getName()));
-			}
-			else {
-				log.debug("Ignored tagged clip {}", clipName);
-			}
-		}
-		catch (IOException e) {
-			log.error(e.getLocalizedMessage());
-		}
-	}
+        // Handle sound
+        clip.getMostProbablePrediction()
+            .ifPresentOrElse(
+                prediction -> {
+                  if (prediction.getScore() >= applicationConfig.getPredictionMinScore()) {
+                    commandHandlersMap.get(prediction.getCategory().getName()).handle(clip);
+                  }
+                },
+                () -> s3Repository.deleteFile(clip.getName()));
+      } else {
+        log.debug("Ignored tagged clip {}", clipName);
+      }
+    } catch (IOException e) {
+      log.error(e.getLocalizedMessage());
+    }
+  }
 
-	private void loadPredictions(SoundClip clip, SeldonMessage response) {
+  private void loadPredictions(SoundClip clip, SeldonMessage response) {
 
-		assert response.getData() != null;
+    assert response.getData() != null;
 
-		List<String> names = response.getData().getNames();
-		if (names != null) {
-			for (int i = 0; i < names.size(); i++) {
+    List<String> names = response.getData().getNames();
+    if (names != null) {
+      for (int i = 0; i < names.size(); i++) {
 
-				String name = names.get(i);
+        String name = names.get(i);
 
-				Prediction p = null;
-				if (response.getData().getNdarray() != null) {
+        Prediction p = null;
+        if (response.getData().getNdarray() != null) {
 
-					Double pValue = (Double) response.getData().getNdarray().get(i);
+          Double pValue = (Double) response.getData().getNdarray().get(i);
 
-					p = Prediction.builder().category(AudioCategory.valueOfLabel(name)).score(pValue).build();
-				}
+          p = Prediction.builder().category(AudioCategory.valueOfLabel(name)).score(pValue).build();
+        }
 
-				clip.addPrediction(p);
-			}
-		}
-	}
-
+        clip.addPrediction(p);
+      }
+    }
+  }
 }

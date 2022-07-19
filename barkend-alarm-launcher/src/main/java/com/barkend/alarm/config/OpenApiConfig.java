@@ -23,9 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class OpenApiConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addRedirectViewController("/", "/swagger-ui.html");
-	}
-
+  @Override
+  public void addViewControllers(ViewControllerRegistry registry) {
+    registry.addRedirectViewController("/", "/swagger-ui.html");
+  }
 }

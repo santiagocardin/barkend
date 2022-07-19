@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TooNoisyEvent {
 
-	private String reason;
-
+  private String reason;
 }

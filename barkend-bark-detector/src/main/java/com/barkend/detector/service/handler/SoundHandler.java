@@ -4,6 +4,5 @@ import com.barkend.detector.model.SoundClip;
 
 public interface SoundHandler {
 
-	void handle(SoundClip clip);
-
+  void handle(SoundClip clip);
 }

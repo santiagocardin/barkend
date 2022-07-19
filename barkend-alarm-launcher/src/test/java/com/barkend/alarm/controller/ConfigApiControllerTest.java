@@ -16,46 +16,41 @@
 
 package com.barkend.alarm.controller;
 
-import java.time.Duration;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.barkend.alarm.config.ApplicationConfig;
 import com.barkend.alarm.controller.mapper.ConfigMapper;
+import java.time.Duration;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest({ ConfigApiController.class, ConfigMapper.class })
+@WebMvcTest({ConfigApiController.class, ConfigMapper.class})
 class ConfigApiControllerTest {
 
-	@MockBean
-	ApplicationConfig applicationConfig;
+  @MockBean ApplicationConfig applicationConfig;
 
-	@Autowired
-	private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-	@Test
-	void getConfig() throws Exception {
-		// given
-		given(this.applicationConfig.getDuration()).willReturn(Duration.ofSeconds(30));
-		given(this.applicationConfig.getSilenceTimeStart()).willReturn("23:30");
-		given(this.applicationConfig.getSilenceTimeEnd()).willReturn("07:30");
+  @Test
+  void getConfig() throws Exception {
+    // given
+    given(this.applicationConfig.getDuration()).willReturn(Duration.ofSeconds(30));
+    given(this.applicationConfig.getSilenceTimeStart()).willReturn("23:30");
+    given(this.applicationConfig.getSilenceTimeEnd()).willReturn("07:30");
 
-		// when
-		// then
-		this.mockMvc.perform(get("/alarm-launcher/config"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.duration").value(30))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.silenceTimeStart").value("23:30"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.silenceTimeEnd").value("07:30"))
-				.andExpect(status().isOk());
-
-	}
-
+    // when
+    // then
+    this.mockMvc
+        .perform(get("/alarm-launcher/config"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.duration").value(30))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.silenceTimeStart").value("23:30"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.silenceTimeEnd").value("07:30"))
+        .andExpect(status().isOk());
+  }
 }

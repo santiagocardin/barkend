@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SirenHandler implements SoundHandler {
 
-	private final S3Repository s3Repository;
+  private final S3Repository s3Repository;
 
-	@Override
-	public void handle(SoundClip clip) {
-		log.debug("Clip {} contains siren. Tagging...", clip.getName());
-		s3Repository.deleteFile(clip.getName());
-	}
-
+  @Override
+  public void handle(SoundClip clip) {
+    log.debug("Clip {} contains siren. Tagging...", clip.getName());
+    s3Repository.deleteFile(clip.getName());
+  }
 }

@@ -7,8 +7,7 @@ import lombok.Data;
 @Builder
 public class Prediction {
 
-	private AudioCategory category;
+  private AudioCategory category;
 
-	private Double score;
-
+  private Double score;
 }

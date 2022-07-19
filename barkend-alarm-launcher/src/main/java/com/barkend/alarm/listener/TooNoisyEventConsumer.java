@@ -22,21 +22,18 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-
 @RequiredArgsConstructor
-
 @Slf4j
 public class TooNoisyEventConsumer {
 
-	private final AlarmLauncherService alarmLauncherService;
+  private final AlarmLauncherService alarmLauncherService;
 
-	@KafkaListener(topics = "TOO_NOISY")
-	public void processNewAudio(TooNoisyEvent event) throws InterruptedException {
+  @KafkaListener(topics = "TOO_NOISY")
+  public void processNewAudio(TooNoisyEvent event) throws InterruptedException {
 
-		final String reason = event.getReason();
+    final String reason = event.getReason();
 
-		log.info("Firing alarm due to {}", reason);
-		this.alarmLauncherService.fireAlarm();
-	}
-
+    log.info("Firing alarm due to {}", reason);
+    this.alarmLauncherService.fireAlarm();
+  }
 }

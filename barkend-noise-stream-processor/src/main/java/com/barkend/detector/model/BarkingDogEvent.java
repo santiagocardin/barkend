@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BarkingDogEvent {
 
-	private String type;
-
+  private String type;
 }

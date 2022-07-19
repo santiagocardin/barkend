@@ -6,9 +6,7 @@
         <groupId>com.barkend</groupId>
         <artifactId>barkend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
-    <groupId>com.barkend</groupId>
     <artifactId>noise-stream-processor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>noise-stream-processor</name>
