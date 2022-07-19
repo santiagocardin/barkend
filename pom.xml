@@ -77,7 +77,6 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${spotless.version}</version>
                 <configuration>
-                    <ratchetFrom>origin/main</ratchetFrom>
                     <formats>
                         <format>
                             <includes>
