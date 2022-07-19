@@ -1,7 +1,6 @@
 spring:
   cloud:
     stream:
-
       function:
         definition: process
 
