@@ -33,7 +33,7 @@
         <spring.javaformat.version>0.0.34</spring.javaformat.version>
         <openapi.generator.version>5.4.0</openapi.generator.version>
         <spotless.version>2.23.0</spotless.version>
-        <jacoco.version>0.8.8</jacoco.version>
+        <jacoco.version>0.8.10</jacoco.version>
         <jib.version>3.2.1</jib.version>
         <sonar.organization>barkend</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
