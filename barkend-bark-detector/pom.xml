@@ -13,7 +13,7 @@
     <description>Barkend :: Bark detector service</description>
 
     <properties>
-        <aws.java.sdk.s3.version>1.12.239</aws.java.sdk.s3.version>
+        <aws.java.sdk.s3.version>1.12.261</aws.java.sdk.s3.version>
         <swagger.version>1.6.6</swagger.version>
     </properties>
 
